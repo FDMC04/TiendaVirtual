@@ -14,6 +14,9 @@
 				<div class="flex-w flex-l-m filter-tope-group m-tb-10">
 					<h3><?= $data['page_title']; ?></h3>
 				</div>
+				<div>
+					<h1>Hola prueba en Rama </h1>
+				</div>
 
 				<div class="flex-w flex-c-m m-tb-10">
 					<div class="flex-c-m stext-106 cl6 size-104 bor4 pointer hov-btn3 trans-04 m-r-8 m-tb-4 js-show-filter">
