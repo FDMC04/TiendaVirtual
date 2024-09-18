@@ -6,6 +6,7 @@
 		use TCategoria, TProducto;
 		public function __construct()
 		{
+			sessionStart();
 			parent::__construct();
 		}
 
@@ -57,7 +58,55 @@
 
 		public function addCarrito(){
 			if($_POST){
-				dep($_POST);
+				// unset($_SESSION['arrCarrito']);exit;
+				$arrCarrito = array();
+				$cantCarrito = 0;
+				// Con la funcion openssl_decrypt se desencripta el id
+				$idproducto = openssl_decrypt($_POST['id'], METHODENCRIPT, KEY);
+				$cantidad = $_POST['cant'];
+				if(is_numeric($idproducto) and is_numeric($cantidad))
+				{
+					$arrInfoProducto = $this->getProductoIDT($idproducto);
+					if(!empty($arrInfoProducto)){
+						$arrProducto = array('idproducto' => $idproducto,
+											'producto' => $arrInfoProducto['nombre'],
+											'cantidad' => $cantidad,
+											'precio' => $arrInfoProducto['precio'],
+											'imagen' => $arrInfoProducto['images'][0]['url_image']
+										);
+						if(isset($_SESSION['arrCarrito'])){
+							$on = true;
+							$arrCarrito = $_SESSION['arrCarrito'];
+							for ($pr=0; $pr < count($arrCarrito); $pr++){
+								if($arrCarrito[$pr]['idproducto'] == $idproducto){
+									$arrCarrito[$pr]['cantidad'] += $cantidad;
+									$on = false;
+								}
+							}
+							if($on){
+								array_push($arrCarrito,$arrProducto);
+							}
+							$_SESSION['arrCarrito'] = $arrCarrito;
+						}else{
+							array_push($arrCarrito, $arrProducto);
+							$_SESSION['arrCarrito'] = $arrCarrito;
+						}
+						foreach($_SESSION['arrCarrito'] as $pro){
+							$cantCarrito += $pro['cantidad'];
+						}
+						$htmlCarrito = getFile('Template/Modals/modalCarrito',$_SESSION['arrCarrito']);
+						$arrResponse = array("status" => true,
+											"msg" => "Se agrego al carrito.",
+											"cantCarrito" => $cantCarrito,
+											"htmlCarrito" => $htmlCarrito
+						);
+					}else{
+						$arrResponse = array("status" => false, "msg" => 'Producto no existente.');
+					}
+				}else{
+					$arrResponse = array("status" => false, "msg" => "Dato incorrecto.");
+				}
+				echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
 			}
 			die();
 		}

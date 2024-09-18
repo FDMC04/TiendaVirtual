@@ -54,7 +54,7 @@ $('.js-addcart-detail').each(function(){
 		let id  = this.getAttribute('id');
 		let cant = document.querySelector('#cant-product').value;
 		if(isNaN(cant) || cant < 1){
-			swal("","La cantidad debe ser mayor o igual que 1","Error");
+			swal("","La cantidad debe ser mayor o igual que 1","error");
 			return;
 		}
 		let request = (window.XMLHttpRequest) ? new XMLHttpRequest() : new ActiveXObject('Microsoft.XMLHTTP');
@@ -67,10 +67,16 @@ $('.js-addcart-detail').each(function(){
 		request.onreadystatechange = function(){
 			if(request.readyState != 4) return;
 			if(request.status == 200){
-				console.log(request.responseText);
+				let objData = JSON.parse(request.responseText);
+				if(objData.status){
+					document.querySelector("#productosCarrito").innerHTML = objData.htmlCarrito;
+					document.querySelector("#cantCarrito").setAttribute("data-notify",objData.cantCarrito);
+					swal(nameProduct, "El producto se agrego al carito", "success");
+				}else{
+					swal("",objData.msg,"error");
+				}
 			}
 		}
-		swal(nameProduct, "El producto se agrego al carito", "success");
 	});
 });
 
