@@ -6,7 +6,8 @@
 		use TCategoria, TProducto;
 		public function __construct()
 		{
-			sessionStart();
+			// sessionStart();
+			session_start();
 			parent::__construct();
 		}
 
@@ -105,6 +106,42 @@
 					}
 				}else{
 					$arrResponse = array("status" => false, "msg" => "Dato incorrecto.");
+				}
+				echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
+			}
+			die();
+		}
+
+		public function delCarrito(){
+			if($_POST){
+				$arrCarrito = array();
+				$cantCarrito = 0;
+				$idproducto = openssl_decrypt($_POST['id'], METHODENCRIPT, KEY);
+				$option = $_POST['option'];
+				if(is_numeric($idproducto) and ($option == 1 or $option == 2)){
+					$arrCarrito = $_SESSION['arrCarrito'];
+					for ($pr = 0; $pr < count($arrCarrito); $pr++){
+						if($arrCarrito[$pr]['idproducto'] == $idproducto){
+							unset($arrCarrito[$pr]);
+						}
+					}
+					// Ordena el array de $arrCarrito
+					sort($arrCarrito);
+					$_SESSION['arrCarrito'] = $arrCarrito;
+					foreach ($_SESSION['arrCarrito'] as $pro) {
+						$cantCarrito += $pro['cantidad'];
+					}
+					$htmlCarrito = "";
+					if($option == 1){
+						$htmlCarrito = getFile('Template/Modals/modalCarrito',$_SESSION['arrCarrito']);
+					}
+					$arrResponse = array("status" => true,
+										"msg" => "Se elimino el producto.",
+										"cantCarrito" => $cantCarrito,
+										"htmlCarrito" => $htmlCarrito
+					);
+				}else{
+					$arrResponse = array("status" => false, "msg" => 'Dato incorrecto.');
 				}
 				echo json_encode($arrResponse,JSON_UNESCAPED_UNICODE);
 			}
