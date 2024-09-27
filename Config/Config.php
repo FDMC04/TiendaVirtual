@@ -34,4 +34,5 @@ CONST CAT_BANNER = "4,5,6";
 //Datos para Encriptar / Desencriptar
 const KEY = 'fdmc';
 const METHODENCRIPT = "AES-128-ECB";
+const COSTOENVIO = 150;
 ?>
