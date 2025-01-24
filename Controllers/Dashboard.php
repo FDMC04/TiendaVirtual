@@ -3,7 +3,8 @@
 	class Dashboard extends Controllers{
 		public function __construct()
 		{
-			sessionStart();
+			// sessionStart();
+			session_start();
 			parent::__construct();
 			if(empty($_SESSION['login']))
 			{

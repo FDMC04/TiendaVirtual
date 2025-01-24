@@ -133,9 +133,9 @@
 							</div>
 						</div>
 
-						<button id="btnComprar" class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
+						<a hred="<?= base_url() ?>/carrito/procesarpago" id="btnComprar" class="flex-c-m stext-101 cl0 size-116 bg3 bor14 hov-btn3 p-lr-15 trans-04 pointer">
 							Procesar Pago
-						</button>
+						</a>
 					</div>
 				</div>
 			</div>

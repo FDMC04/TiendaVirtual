@@ -2,13 +2,17 @@
 
 	require_once("Models/TCategoria.php");
 	require_once("Models/TProducto.php");
+	require_once("Models/TCliente.php");
+	require_once("Models/LoginModel.php");
 	class Tienda extends Controllers{
-		use TCategoria, TProducto;
+		use TCategoria, TProducto, TCliente;
+		public $login;
 		public function __construct()
 		{
 			// sessionStart();
 			session_start();
 			parent::__construct();
+			$this->login = new LoginModel();
 		}
 
 		public function tienda()
@@ -187,6 +191,61 @@
 			}
 			die();
 		}
+
+		public function registro(){
+			if($_POST){
+				error_reporting(0);
+				
+				if(empty($_POST['txtNombre']) || empty($_POST['txtApellido']) || empty($_POST['txtTelefono']) || empty($_POST['txtEmailCliente'])){
+					$arrResponse = array("status" => false, "msg" => 'Datos incorrectos.');
+				}else{
+					$strNombre = ucwords(strClean($_POST["txtNombre"]));
+					$strApellido = ucwords(strClean($_POST["txtApellido"]));
+					$intTelefono = intval(strClean($_POST['txtTelefono']));
+					// strtolower convierte todas las letras en minusculas
+					$strEmail = strtolower(strClean($_POST["txtEmailCliente"]));
+					$intTipoId = 7;
+					$request_user = "";
+					$strPassword =  passGenerator();
+					$strPasswordEncript = hash("SHA256",$strPassword);
+					$request_user = $this->insertCliente($strNombre,
+						$strApellido,
+						$intTelefono,
+						$strEmail,
+						$strPasswordEncript,
+						$intTipoId);
+						
+
+					
+					if($request_user > 0)
+					{
+						$arrResponse = array('status' => true, 'msg' => 'Datos guardados correctamente.');
+						$nombreusuario = $strNombre.' '.$strApellido;
+						$dataUsuario = array(
+							'nombreUsuario'=>$nombreusuario,
+							'email'=>$strEmail,
+							'password'=>$strPassword,
+							'asunto'=>'Bienvendio a nuestra pagina',
+						);
+						$_SESSION['idUser'] = $request_user;
+						$_SESSION['login'] = true;
+						$this->login->sessionLogin($request_user);
+						//sendEmail($dataUsuario,'email_bienvenida');
+
+					}else if($request_user == 0){
+						$arrResponse = array('status' => false, 'msg' => 'El email ya existe, ingrese otro.');
+					}else{
+						$arrResponse = array('status' => false, 'msg' => 'No es posible almacenar los datos.');
+					}
+				}
+				sleep(1);
+				echo json_encode($arrResponse, JSON_UNESCAPED_UNICODE);
+			}
+			die();
+		}
+
+
+
 	}
 
 ?>
