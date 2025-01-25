@@ -186,6 +186,21 @@ if(document.querySelector("#formRegister")){
 	}
 }
 
+if(document.querySelector(".methodpago")){
+	let optmetodo = document.querySelectorAll(".methodpago");
+	optmetodo.forEach(function(optmetodo) {
+		optmetodo.addEventListener('click', function(){
+			if(this.value == "Paypal"){
+				document.querySelector("#msgpaypal").classList.remove("notBlock");
+				document.querySelector("#divtipopago").classList.add("notBlock");
+			}else{
+				document.querySelector("#msgpaypal").classList.add("notBlock");
+				document.querySelector("#divtipopago").classList.remove("notBlock");
+			}
+		})
+	})
+}
+
 function fntdelItem(element){
 	// Option 1 = Modal
 	// Option 2 = Vista Carrito

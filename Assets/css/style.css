@@ -211,4 +211,13 @@
 	height: 80px;
 }
 
-/*  */
+/* TIENDA VIRTUAL */
+
+.divmetodpago label{
+	width: 100%;
+	display: flex;
+}
+
+.divmetodpago label input{
+	margin-right: 15px;
+}
