@@ -20,6 +20,13 @@ CONST SPM = ",";
 
 // Simbolo de moneda
 CONST SMONEY = "$";
+CONST CURRENCY = "MXN";
+
+//Esta es la version de Prueba
+const IDCLIENTE = "AQokLV_aIfw_GV35aE0oDFuS4A30C5bLw3fzoMCV3TVAKHS14aAqhCxluAtGHZpV_a9fSGnjc1sUk4x0";
+
+// Esta es la version en linea
+// const IDCLIENTE = "AU6RG15i_FsQ_B6u-QTSkhWkccDuZMNZbAsEt7GVExHedUWVObibkJnTSSIePx-wFI_YDxvHrlgKWShd";
 
 // Datos para el envio de correo
 CONST NOMBRE_REMITENTE = "Refacciones y Multiservicios";

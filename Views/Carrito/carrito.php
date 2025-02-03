@@ -2,6 +2,7 @@
     headerTienda($data); 
 	$subtotal = 0;
 	$total = 0;
+	// dep($_SESSION['arrCarrito']);
 ?>
 <br>
 <br>
