@@ -15,6 +15,12 @@
           <div class="tile">
             <div class="tile-body">Create a beautiful dashboard</div>
           </div>
+          <?php
+            // $request_api = CurlConnectionGet(URLPAYPAL."/v2/checkout/orders/0U822013YU198821W","application/json", getTokenPaypal());
+            // dep($request_api);
+            $REQUEST_POST = CurlConnectionPost(URLPAYPAL."/v2/payments/captures/2E194843MS568881R/refund", "application/json", getTokenPaypal());
+            dep($REQUEST_POST);
+          ?>
         </div>
       </div>
     </main>

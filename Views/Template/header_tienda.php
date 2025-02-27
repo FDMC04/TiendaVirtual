@@ -122,7 +122,7 @@
 							<i class="zmdi zmdi-search"></i>
 						</div>			
 						<div class="flex-c-m h-full p-r-25 bor6">
-						<?php if($data['page_name'] != "carrito"){ ?>
+						<?php if($data['page_name'] != "carrito" && $data['page_name'] != "procesarpago"){ ?>
 							<div class="cantCarrito icon-header-item cl3 hov-cl1 trans-04 p-lr-11 icon-header-noti js-show-cart" data-notify="<?= $cantCarrito; ?>">
 								<i class="zmdi zmdi-shopping-cart"></i>
 								<!-- <i class="zmdi a-solid fa-cart-shopping"></i> -->
@@ -152,7 +152,7 @@
 					<div class="icon-header-item c12 hov-cli trans-04 p-r-11 js-show-modal-search">
 						<i class="zmdi zmdi-search"></i>
 					</div>
-					<?php if($data['page_name'] != "carrito"){ ?>
+					<?php if($data['page_name'] != "carrito" && $data['page_name'] != "procesarpago"){ ?>
 					<div class="cantCarrito icon-header-item cl2 hov-cl1 trans-04 p-r-11 p-1-20 icon-header-noti js-show-cart" data-notify="<?= $cantCarrito; ?>">
 						<i class="zmdi zmdi-shopping-cart"></i>
 					</div>

@@ -254,14 +254,59 @@
 				$direccionenvio = strClean($_POST['direccion']).', '.strClean($_POST['ciudad']);
 				$status = "Pendiente";
 				$subtotal = 0;
+				$costo_envio = COSTOENVIO;
 
 				if(!empty($_SESSION['arrCarrito'])){
 					foreach($_SESSION['arrCarrito'] as $pro){
 						$subtotal += $pro['cantidad'] * $pro['precio'];
 					}
-					$monto = formatMoney($subtotal + COSTOENVIO);
-					if(empty($_POST['datapay'])){}
-					else{
+					// ! Se modifico de lo original porque al utilizar la funcion formatMoney se agregaba una coma a las catidades de mil, lo que hacia que no se guardara bien en la base de datos
+					$monto = floatval(str_replace([',', '$'], '', formatMoney($subtotal + COSTOENVIO)));
+					// !
+					// Pago contra entrega
+					if(empty($_POST['datapay'])){
+						// Proceso para insertar pedido
+						$request_pedido = $this->insertPedido($idtransaccionpaypal,
+						$datospaypal,
+						$personaid,
+						$costo_envio,
+						$monto,
+						$tipopagoid,
+						$direccionenvio,
+						$status);
+						if($request_pedido > 0){
+							foreach ($_SESSION['arrCarrito'] as $producto) {
+								$productoid = $producto['idproducto'];
+								$precio = $producto['precio'];
+								$cantidad = $producto['cantidad'];
+								$this->insertDetalle($request_pedido,$productoid,$precio,$cantidad);
+							}
+
+							$infoOrden = $this->getPedido($request_pedido);
+							$dataEmailOrden = array( 	
+														'asunto' => "Se ha creado la orden No. ".$request_pedido,
+														'email' => $_SESSION['userData']['email_user'],
+														'emailCopia' => EMAIL_PEDIDOS,
+														'pedido' => $infoOrden 
+													);
+							sendEmail($dataEmailOrden,"email_notificacion_orden");
+
+							$orden = openssl_encrypt($request_pedido, METHODENCRIPT, KEY);
+							if ($idtransaccionpaypal === null) {
+								$idtransaccionpaypal = ''; 
+							}
+							$transaccion = openssl_encrypt($idtransaccionpaypal, METHODENCRIPT, KEY);
+							$arrResponse = array("status" => true,
+												"orden" => $orden,
+												"transaccion" => $transaccion,
+												"msg" => 'Pedido realizado'
+							);
+							$_SESSION['dataorden'] = $arrResponse;
+							unset($_SESSION['arrCarrito']);
+							session_regenerate_id(true);
+						}
+					}
+					else{ //Pago con Paypal
 						$jsonPaypal = $_POST['datapay'];
 						$objPaypal = json_decode($jsonPaypal);
 						$status = "Aprobado";
@@ -277,6 +322,7 @@
 								$request_pedido = $this->insertPedido($idtransaccionpaypal,
 								$datospaypal,
 								$personaid,
+								$costo_envio,
 								$monto,
 								$tipopagoid,
 								$direccionenvio,
@@ -288,6 +334,16 @@
 										$cantidad = $producto['cantidad'];
 										$this->insertDetalle($request_pedido,$productoid,$precio,$cantidad);
 									}
+									$infoOrden = $this->getPedido($request_pedido);
+									$dataEmailOrden = array( 	
+																'asunto' => "Se ha creado la orden No. ".$request_pedido,
+																'email' => $_SESSION['userData']['email_user'],
+																'emailCopia' => EMAIL_PEDIDOS,
+																'pedido' => $infoOrden 
+															);
+									// ! Esto se usa solo cuando esta en la web
+									// sendEmail($dataEmailOrden,"email_notificacion_orden");
+									// !
 									$orden = openssl_encrypt($request_pedido, METHODENCRIPT, KEY);
 									$transaccion = openssl_encrypt($idtransaccionpaypal, METHODENCRIPT, KEY);
 									$arrResponse = array("status" => true,

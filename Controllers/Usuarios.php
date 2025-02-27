@@ -149,7 +149,6 @@
 
 					$arrData[$i]['options'] = '<div class="text-center">'.$btnView.' '.$btnEdit.' '. $btnDelete.'</div>';
 				}
-
 				echo json_encode($arrData,JSON_UNESCAPED_UNICODE);
 			}
 			die();

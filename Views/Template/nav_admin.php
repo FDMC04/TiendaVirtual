@@ -60,6 +60,22 @@
             </a>
           </li>
         <?php } ?>
+        <?php if(!empty($_SESSION['permisos'][7]['r'])) { ?>
+          <li class="treeview">
+          <a class="app-menu__item" href="#" data-toggle="treeview">
+            <i class="app-menu__icon fa-solid fa-basket-shopping"></i>
+            <span class="app-menu__label">Estado de Cuenta</span><i class="treeview-indicator fa fa-angle-right"></i>
+          </a>
+            <ul class="treeview-menu">
+              <?php if(!empty($_SESSION['permisos'][7]['r'])) { ?>
+              <li><a class="treeview-item" href="<?= base_url(); ?>/ec"><i class="app-menu__icon fa fa-archive"></i> Registros</a></li>
+              <?php } ?>
+              <?php if(!empty($_SESSION['permisos'][8]['r'])) { ?>
+              <li><a class="treeview-item" href="<?= base_url(); ?>/empresas"><i class="icon fa-solid fa-box-tissue"></i> Empresas</a></li>
+              <?php } ?>
+            </ul>
+          </li>
+        <?php } ?>
         <li>
           <a class="app-menu__item" href="<?= base_url(); ?>/logout">
             <i class="app-menu__icon fa fa-sign-out" aria-hidden="true"></i>

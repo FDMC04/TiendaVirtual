@@ -276,6 +276,7 @@ document.addEventListener('DOMContentLoaded', function(){
 
 window.addEventListener('load', function(){
 	fntRolesUsuario();
+	$('#listEmpid').selectpicker('refresh');
 	// fntViewUsuario();
 	// fntEditUsuario();
 	// fntDelUsuario();
