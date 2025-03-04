@@ -77,5 +77,16 @@ CONST CAT_BANNER = "4,5,6";
 //Datos para Encriptar / Desencriptar
 const KEY = 'fdmc';
 const METHODENCRIPT = "AES-128-ECB";
+// Envío
 const COSTOENVIO = 150;
+
+// Modulos
+const MCLIENTES = 3;
+const MPEDIDOS = 5;
+
+// Roles
+const RADMINISTRADOR = 1;
+const RCLIENTES = 8;
+
+const STATUS = array('Completo','Aprobado','Cancelado','Reembolso','Pendiente','Entregado');
 ?>
