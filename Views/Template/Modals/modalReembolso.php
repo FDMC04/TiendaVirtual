@@ -28,7 +28,6 @@ $moneda = $trs->payments->captures[0]->amount->currency_code;
         </button>
       </div>
       <div class="modal-body">
-        <?php dep($data); ?>
         <table class="table table-bordered">
             <input type="hidden" name="" id="idtransaccion" value="<?= $idTransaccion ?>">
           <tbody>
